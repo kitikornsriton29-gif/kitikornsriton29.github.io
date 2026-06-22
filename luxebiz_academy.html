@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuxeBiz Academy - The Golden Standard</title>
+    <!-- Google Fonts: Playfair Display (Serif) & Montserrat (Sans-serif) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        midnight: '#0B0D17',
+                        gold: '#D4AF37',
+                        goldLight: '#F3E5AB',
+                        ivory: '#F5F5F5',
+                        charcoal: '#1A1C24'
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Montserrat"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Premium Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0B0D17;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D4AF37;
+            border-radius: 10px;
+        }
+        
+        /* Shimmer Effect for Luxury feel */
+        .gold-shimmer {
+            background: linear-gradient(135deg, #0B0D17 0%, #1A1C24 50%, #0B0D17 100%);
+            background-size: 200% 200%;
+            animation: shimmer 15s ease infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Golden Glow Border */
+        .gold-glow {
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .gold-glow:hover {
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.35);
+            border-color: #D4AF37;
+        }
+
+        /* Typewriter text cursor effect */
+        .typewriter-cursor::after {
+            content: '|';
+            animation: blink 1s step-end infinite;
+            color: #D4AF37;
+        }
+        @keyframes blink {
+            from, to { color: transparent }
+            50% { color: #D4AF37; }
+        }
+
+        /* Glassmorphism Navigation */
+        .glass-nav {
+            background: rgba(11, 13, 23, 0.85);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        /* Screen Transitions */
+        .screen-transition {
+            transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .screen-hidden {
+            display: none !important;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        .screen-active {
+            display: block !important;
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-midnight text-ivory font-sans h-screen overflow-hidden flex flex-col relative select-none">
+
+    <!-- Interactive Gold Particles Background -->
+    <canvas id="particles-canvas" class="absolute inset-0 pointer-events-none z-0"></canvas>
+
+    <!-- Main Container -->
+    <main class="flex-1 overflow-y-auto z-10 flex flex-col max-w-md mx-auto w-full bg-midnight bg-opacity-90 border-x border-gold border-opacity-10 shadow-2xl relative h-full">
+        
+        <!-- HEADER (Appears after Phase 1 is done, or dynamically based on screen) -->
+        <header id="app-header" class="hidden px-6 py-4 flex items-center justify-between border-b border-gold border-opacity-20 bg-midnight bg-opacity-95 sticky top-0 z-50">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-full border border-gold flex items-center justify-center bg-gradient-to-br from-charcoal to-midnight">
+                    <span class="font-serif text-gold font-bold text-xs">L</span>
+                </div>
+                <span class="font-serif text-gold tracking-widest text-sm font-semibold">LUXEBIZ</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-1.5 bg-charcoal bg-opacity-80 px-2.5 py-1 rounded-full border border-gold border-opacity-20">
+                    <i class="fa-solid fa-crown text-gold text-xs"></i>
+                    <span id="header-user-rank" class="text-[10px] text-gold font-semibold uppercase tracking-wider">Apprentice</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- BACK BUTTON FOR FLOWS -->
+        <div id="back-btn-container" class="hidden px-6 pt-4 sticky top-0 z-50 pointer-events-none">
+            <button onclick="navigateBack()" class="pointer-events-auto flex items-center justify-center w-10 h-10 rounded-full bg-charcoal bg-opacity-80 border border-gold border-opacity-30 hover:border-gold transition-all duration-300">
+                <i class="fa-solid fa-arrow-left text-gold"></i>
+            </button>
+        </div>
+
+        <!-- ==================== SCREEN 1: WELCOME SCREEN ==================== -->
+        <section id="screen-welcome" class="screen-transition screen-active flex-1 flex flex-col justify-between p-8 text-center relative overflow-hidden">
+            <div class="my-auto space-y-10">
+                <!-- App Logo/Icon -->
+                <div class="mx-auto w-24 h-24 rounded-full border-2 border-gold flex items-center justify-center bg-gradient-to-tr from-midnight via-charcoal to-midnight shadow-[0_0_30px_rgba(212,175,55,0.2)] animate-pulse">
+                    <span class="font-serif text-gold text-4xl font-bold tracking-widest">LB</span>
+                </div>
+                
+                <div class="space-y-4">
+                    <h2 class="font-serif text-gold tracking-widest uppercase text-xs font-semibold">LuxeBiz Academy</h2>
+                    <h1 id="welcome-text" class="font-serif text-2xl md:text-3xl font-light leading-relaxed text-ivory">
+                        <!-- Typewriter will inject content here -->
+                    </h1>
+                </div>
+
+                <p class="text-xs text-gray-400 font-light max-w-xs mx-auto leading-relaxed">
+                    ค้นพบวิถีแห่งความสำเร็จที่ออกแบบมาเพื่อคุณโดยเฉพาะ การเรียนรู้ด้านการเงินและธุรกิจระดับพรีเมียม
+                </p>
+            </div>
+
+            <div class="pb-8">
+                <button onclick="startJourney()" class="w-full py-4 rounded-full border border-gold bg-transparent text-gold font-semibold text-sm tracking-widest hover:bg-gold hover:text-midnight transition-all duration-500 hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transform hover:scale-105 active:scale-95">
+                    เริ่มต้นการเดินทางสู่ความสำเร็จ <i class="fa-solid fa-chevron-right ml-2 text-xs"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- ==================== SCREEN 2: SUBJECT SELECTION ==================== -->
+        <section id="screen-subject" class="screen-transition screen-hidden flex-1 flex flex-col justify-between p-6">
+            <div class="space-y-6 my-auto">
+                <div class="text-center space-y-2">
+                    <h2 class="font-serif text-gold text-2xl font-light">The Path of Excellence</h2>
+                    <p class="text-xs text-gray-400">โปรดเลือกหลักสูตรที่คุณปรารถนาจะเริ่มต้นเรียนรู้เป็นอันดับแรก</p>
+                </div>
+
+                <!-- Subject Cards Container -->
+                <div class="space-y-4">
+                    <!-- Business Card -->
+                    <div id="card-business" onclick="selectSubject('business')" class="gold-glow bg-charcoal bg-opacity-50 p-6 rounded-2xl border border-gold border-opacity-10 cursor-pointer group transition-all duration-300">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-lg bg-gold bg-opacity-10 flex items-center justify-center border border-gold border-opacity-30">
+                                    <i class="fa-solid fa-briefcase text-gold text-lg"></i>
+                                </div>
+                                <h3 class="font-serif text-lg font-medium text-ivory group-hover:text-gold transition-colors duration-300">ธุรกิจ (The Master of Business)</h3>
+                            </div>
+                            <div class="radio-indicator w-5 h-5 rounded-full border border-gold border-opacity-40 flex items-center justify-center">
+                                <div class="dot w-2.5 h-2.5 rounded-full bg-gold scale-0 transition-transform duration-300"></div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-400 font-light leading-relaxed">
+                            ถอดรหัสกลยุทธ์การสร้างอาณาจักร ตั้งแต่การวางโครงสร้างไปจนถึงการขยายกิจการให้ยั่งยืน เรียนรู้การเป็นผู้นำที่ครองใจตลาด
+                        </p>
+                    </div>
+
+                    <!-- Finance Card -->
+                    <div id="card-finance" onclick="selectSubject('finance')" class="gold-glow bg-charcoal bg-opacity-50 p-6 rounded-2xl border border-gold border-opacity-10 cursor-pointer group transition-all duration-300">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-lg bg-gold bg-opacity-10 flex items-center justify-center border border-gold border-opacity-30">
+                                    <i class="fa-solid fa-chart-line text-gold text-lg"></i>
+                                </div>
+                                <h3 class="font-serif text-lg font-medium text-ivory group-hover:text-gold transition-colors duration-300">การเงิน (The Financial Mastery)</h3>
+                            </div>
+                            <div class="radio-indicator w-5 h-5 rounded-full border border-gold border-opacity-40 flex items-center justify-center">
+                                <div class="dot w-2.5 h-2.5 rounded-full bg-gold scale-0 transition-transform duration-300"></div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-400 font-light leading-relaxed">
+                            ศิลปะแห่งการบริหารความมั่งคั่ง เข้าใจการหมุนเวียนของกระแสเงินสด การลงทุน และการทำให้สินทรัพย์ทำงานแทนคุณอย่างมืออาชีพ
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enter Classroom CTA Button -->
+            <div class="pt-6">
+                <button id="btn-enter-classroom" disabled onclick="enterClassroom()" class="w-full py-4 rounded-full border border-gray-600 bg-transparent text-gray-500 font-semibold text-sm tracking-widest transition-all duration-500 cursor-not-allowed">
+                    กรุณาเลือกวิชาเรียนเพื่อเริ่มบทเรียน
+                </button>
+            </div>
+        </section>
+
+        <!-- ==================== SCREEN 3: PRE-TEST ASSESSMENT ==================== -->
+        <section id="screen-pretest" class="screen-transition screen-hidden flex-1 flex flex-col justify-between p-6">
+            <div>
+                <!-- Top Progress Bar -->
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xs text-gray-400 uppercase tracking-widest font-serif font-semibold">The First Challenge</span>
+                    <span id="quiz-progress-text" class="text-xs text-gold font-semibold">1/10</span>
+                </div>
+                <div class="w-full h-[2px] bg-charcoal rounded-full mb-6 relative overflow-hidden">
+                    <div id="quiz-progress-bar" class="absolute top-0 left-0 h-full bg-gold transition-all duration-500" style="width: 10%;"></div>
+                </div>
+
+                <!-- Quiz Title and Question Card -->
+                <div id="quiz-card" class="bg-charcoal bg-opacity-40 border border-gold border-opacity-15 p-6 rounded-2xl mb-6">
+                    <span id="quiz-badge" class="inline-block px-2 py-0.5 text-[9px] border border-gold border-opacity-35 text-gold rounded-md uppercase tracking-wider mb-4">Business Mastery</span>
+                    <h2 id="quiz-question" class="font-serif text-lg text-ivory font-light leading-relaxed mb-6">
+                        Value Proposition คืออะไร?
+                    </h2>
+                    
+                    <!-- Options List -->
+                    <div id="quiz-options" class="space-y-3">
+                        <!-- Dynamically filled with JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Navigation -->
+            <div class="flex items-center justify-between gap-4 pt-4">
+                <button id="quiz-prev-btn" onclick="prevQuizQuestion()" class="flex-1 py-3.5 rounded-full border border-gold border-opacity-20 text-gray-400 font-semibold text-xs tracking-widest hover:border-gold hover:text-gold transition-all duration-300">
+                    <i class="fa-solid fa-arrow-left mr-2"></i> ย้อนกลับ
+                </button>
+                <button id="quiz-next-btn" disabled onclick="nextQuizQuestion()" class="flex-1 py-3.5 rounded-full bg-gold text-midnight font-bold text-xs tracking-widest hover:bg-goldLight transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    ถัดไป <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- ==================== SCREEN 4: RESULT SCREEN ==================== -->
+        <section id="screen-result" class="screen-transition screen-hidden flex-1 flex flex-col justify-between p-6 text-center">
+            <div class="my-auto space-y-8">
+                <!-- Badge Icon -->
+                <div class="mx-auto w-28 h-28 rounded-full border border-gold flex items-center justify-center bg-gradient-to-tr from-charcoal to-midnight relative shadow-[0_0_40px_rgba(212,175,55,0.15)]">
+                    <i class="fa-solid fa-award text-gold text-5xl"></i>
+                    <div class="absolute -bottom-1 bg-gold text-midnight text-[10px] px-3 py-0.5 rounded-full font-bold uppercase tracking-widest">Pre-test</div>
+                </div>
+
+                <div class="space-y-3">
+                    <h2 class="font-serif text-gold text-xs uppercase tracking-widest font-semibold">การประเมินเสร็จสมบูรณ์</h2>
+                    <h1 class="font-serif text-2xl text-ivory">ผลการประเมินของคุณ</h1>
+                    <div class="inline-flex items-center space-x-2 bg-charcoal bg-opacity-75 px-4 py-2 rounded-xl border border-gold border-opacity-10">
+                        <span class="text-sm text-gray-400">คะแนนเฉลี่ย:</span>
+                        <span id="result-score" class="text-lg font-bold text-gold">8/10</span>
+                    </div>
+                </div>
+
+                <div class="bg-charcoal bg-opacity-30 border border-gold border-opacity-10 p-5 rounded-2xl max-w-xs mx-auto">
+                    <p class="text-[10px] uppercase text-gold tracking-widest font-serif font-bold mb-1">Rank Title Awarded</p>
+                    <h3 id="result-rank-title" class="font-serif text-xl font-semibold text-ivory mb-2">Rising Star</h3>
+                    <p id="result-rank-desc" class="text-xs text-gray-400 font-light leading-relaxed">
+                        คุณมีความรู้พื้นฐานที่ยอดเยี่ยม เหมาะสำหรับการต่อยอดความเข้าใจในเชิงลึกเพื่อก้าวสู่ระดับบริหารระดับสูง
+                    </p>
+                </div>
+            </div>
+
+            <div class="pt-6">
+                <button onclick="enterDashboard()" class="w-full py-4 rounded-full bg-gold text-midnight font-bold text-sm tracking-widest hover:bg-goldLight hover:shadow-[0_0_20px_rgba(212,175,55,0.3)] transition-all duration-300">
+                    เข้าสู่ The Executive Suite <i class="fa-solid fa-chevron-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- ==================== SCREEN 5: MAIN DASHBOARD (The Executive Suite) ==================== -->
+        <section id="screen-dashboard" class="screen-transition screen-hidden flex-1 p-6 space-y-6">
+            <!-- Executive Suite Welcome & Progress -->
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="font-serif text-xl text-ivory">The Executive Suite</h1>
+                    <p class="text-[10px] text-gray-400 uppercase tracking-widest">ยินดีต้อนรับกลับระดับผู้บริหาร</p>
+                </div>
+                <div class="w-10 h-10 rounded-full border border-gold border-opacity-30 overflow-hidden bg-charcoal flex items-center justify-center">
+                    <i class="fa-solid fa-user-tie text-gold text-sm"></i>
+                </div>
+            </div>
+
+            <!-- Progress Card -->
+            <div class="bg-gradient-to-br from-charcoal to-midnight p-5 rounded-2xl border border-gold border-opacity-20 flex items-center justify-between">
+                <div class="space-y-2">
+                    <span class="text-[10px] text-gold uppercase tracking-widest font-bold">ความคืบหน้าโดยรวม</span>
+                    <h3 class="font-serif text-base text-ivory leading-tight">สถิติการเรียนรู้ของคุณ</h3>
+                    <p id="dashboard-progress-detail" class="text-[11px] text-gray-400">บทเรียนสำเร็จแล้ว 1/6 บทวิง</p>
+                </div>
+                <!-- Circular Progress Bar using SVG -->
+                <div class="relative flex items-center justify-center w-16 h-16">
+                    <svg class="w-full h-full transform -rotate-90">
+                        <circle cx="32" cy="32" r="28" stroke="#1A1C24" stroke-width="4" fill="transparent" />
+                        <circle cx="32" cy="32" r="28" stroke="#D4AF37" stroke-width="4" fill="transparent" 
+                                stroke-dasharray="175" stroke-dashoffset="131" id="dash-circular-progress" />
+                    </svg>
+                    <span class="absolute text-xs font-semibold text-gold">25%</span>
+                </div>
+            </div>
+
+            <!-- Daily Insight Quotient -->
+            <div class="bg-charcoal bg-opacity-40 p-5 rounded-2xl border border-gold border-opacity-10 space-y-3">
+                <div class="flex items-center justify-between">
+                    <span class="text-[10px] text-gold uppercase tracking-widest font-semibold"><i class="fa-regular fa-lightbulb mr-1"></i> Daily Insight</span>
+                    <span class="text-[9px] text-gray-400">พรีเมียมเฉพาะสมาชิก</span>
+                </div>
+                <p class="text-xs italic text-gray-300 font-light leading-relaxed">
+                    "กระแสเงินสดคือราชันย์ แต่การจัดการแบรนด์และความยั่งยืนต่างหากคือจักรพรรดิผู้ครองความมั่งคั่งอย่างยาวนาน"
+                </p>
+                <div class="text-right">
+                    <span class="text-[10px] text-gold font-serif">- LuxeBiz Insight Council</span>
+                </div>
+            </div>
+
+            <!-- Continue Learning Section -->
+            <div class="space-y-3">
+                <h3 class="font-serif text-sm text-gold uppercase tracking-widest">เรียนรู้อย่างต่อเนื่อง</h3>
+                <div id="continue-learning-card" onclick="goToTab('academy')" class="gold-glow bg-charcoal bg-opacity-60 p-4 rounded-xl border border-gold border-opacity-10 flex items-center justify-between cursor-pointer group">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-lg bg-gold bg-opacity-10 flex items-center justify-center border border-gold border-opacity-20 text-gold">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <div>
+                            <h4 id="continue-course-title" class="text-xs font-semibold text-ivory group-hover:text-gold transition-colors">Business Mastery (The Academy)</h4>
+                            <p class="text-[10px] text-gray-400">บทที่ 1: Strategy & Vision</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-circle-play text-gold text-lg transition-transform group-hover:scale-110"></i>
+                </div>
+            </div>
+
+            <!-- Executive Lounge Network Preview -->
+            <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-serif text-sm text-gold uppercase tracking-widest">The Executive Lounge</h3>
+                    <span onclick="goToTab('lounge')" class="text-[10px] text-gold hover:underline cursor-pointer">เข้าคลับ <i class="fa-solid fa-arrow-right text-[8px]"></i></span>
+                </div>
+                <div class="bg-charcoal bg-opacity-30 p-4 rounded-xl border border-gold border-opacity-15 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-semibold text-ivory"><i class="fa-solid fa-circle text-emerald-500 text-[6px] mr-1.5 align-middle"></i> Exclusive Networking Event</span>
+                        <span class="text-[9px] text-gold">เร็วๆ นี้</span>
+                    </div>
+                    <p class="text-xs text-gray-400 leading-relaxed font-light">
+                        "LuxeBiz Private Seminar: Global Wealth Management 2026" วันที่ 25 มิ.ย. นี้ ณ เกษรพลาซ่า
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SCREEN 6: THE ACADEMY (Library of Knowledge) ==================== -->
+        <section id="screen-academy" class="screen-transition screen-hidden flex-1 p-6 space-y-6">
+            <div class="text-center">
+                <h1 class="font-serif text-xl text-gold">The Academy</h1>
+                <p class="text-[10px] text-gray-400 uppercase tracking-widest">Library of Knowledge</p>
+            </div>
+
+            <!-- Subject Wing Tabs -->
+            <div class="flex border-b border-gold border-opacity-20">
+                <button id="academy-tab-business" onclick="toggleAcademyWing('business')" class="flex-1 py-3 text-xs font-semibold tracking-wider border-b-2 border-gold text-gold transition-all">
+                    BUSINESS WING
+                </button>
+                <button id="academy-tab-finance" onclick="toggleAcademyWing('finance')" class="flex-1 py-3 text-xs font-semibold tracking-wider border-b-2 border-transparent text-gray-400 hover:text-gold transition-all">
+                    FINANCE WING
+                </button>
+            </div>
+
+            <!-- Modules Content Container -->
+            <div id="academy-modules-container" class="space-y-4">
+                <!-- Dynamically loaded based on Wing selection -->
+            </div>
+        </section>
+
+        <!-- ==================== SCREEN 7: THE EXECUTIVE LOUNGE (Community) ==================== -->
+        <section id="screen-lounge" class="screen-transition screen-hidden flex-1 p-6 space-y-6">
+            <div class="text-center">
+                <h1 class="font-serif text-xl text-gold">The Executive Lounge</h1>
+                <p class="text-[10px] text-gray-400 uppercase tracking-widest">Prestige Circle & Forum</p>
+            </div>
+
+            <!-- Networking Banner -->
+            <div class="bg-gradient-to-tr from-charcoal to-midnight p-5 rounded-2xl border border-gold border-opacity-30 relative overflow-hidden">
+                <div class="absolute right-2 bottom-2 text-gold text-opacity-10 text-7xl"><i class="fa-solid fa-glass-cheers"></i></div>
+                <span class="text-[9px] bg-gold text-midnight px-2 py-0.5 rounded-full font-bold uppercase tracking-widest">Exclusive VIP Event</span>
+                <h3 class="font-serif text-sm text-ivory mt-2 mb-1">Prestige Wine & Business Connect</h3>
+                <p class="text-[11px] text-gray-400 leading-relaxed mb-3">พูดคุยแลกเปลี่ยนมุมมองธุรกิจและการเงินแบบลับๆ ร่วมกับผู้บริหารและศิษย์เก่า LuxeBiz</p>
+                <button onclick="rsvpEvent()" class="px-4 py-1.5 bg-gold text-midnight text-[11px] font-bold rounded-lg hover:bg-goldLight transition-all">สำรองที่นั่งด่วน</button>
+            </div>
+
+            <!-- Discussion Feed -->
+            <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-serif text-xs text-gold uppercase tracking-widest">ฟอรัมบทสนทนา</h3>
+                    <button onclick="showCreatePostModal()" class="text-xs text-gold"><i class="fa-solid fa-pen-fancy"></i> เขียนกระทู้</button>
+                </div>
+
+                <div class="space-y-3" id="forum-posts-container">
+                    <!-- Post 1 -->
+                    <div class="bg-charcoal bg-opacity-40 p-4 rounded-xl border border-gold border-opacity-10 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] text-gold font-semibold"><i class="fa-solid fa-user-tie mr-1"></i> ดร. ธีรเดช (Alumni)</span>
+                            <span class="text-[9px] text-gray-400">2 ชม. ที่แล้ว</span>
+                        </div>
+                        <h4 class="text-xs font-semibold text-ivory">มุมมองวิกฤตเศรษฐกิจปี 2026 และวิธีตั้งรับของพอร์ตการลงทุนส่วนตัว</h4>
+                        <p class="text-[11px] text-gray-400 font-light leading-relaxed">
+                            ผมแนะนำให้แบ่งสัดส่วนเงินสดและสินทรัพย์ทางเลือก โดยพึ่งพิงการกระจายความเสี่ยงระดับสากลมากกว่าเก็บไว้ในตลาดในประเทศเพียงอย่างเดียวครับ...
+                        </p>
+                        <div class="flex items-center space-x-4 text-[10px] text-gold pt-2">
+                            <span><i class="fa-regular fa-heart"></i> 24 ถูกใจ</span>
+                            <span><i class="fa-regular fa-comment"></i> 8 ความเห็น</span>
+                        </div>
+                    </div>
+
+                    <!-- Post 2 -->
+                    <div class="bg-charcoal bg-opacity-40 p-4 rounded-xl border border-gold border-opacity-10 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] text-gold font-semibold"><i class="fa-solid fa-crown mr-1"></i> คุณ ลลิตา (Premium Pro)</span>
+                            <span class="text-[9px] text-gray-400">1 วัน ที่แล้ว</span>
+                        </div>
+                        <h4 class="text-xs font-semibold text-ivory">การทำ Branding ในตลาด High-End ต้องอาศัยสัญวิทยาอะไรบ้าง?</h4>
+                        <p class="text-[11px] text-gray-400 font-light leading-relaxed">
+                            แบรนด์หรูไม่เพียงแต่สร้างเพื่อขายผลิตภัณฑ์ แต่สร้างเพื่อตอบสนองต่ออัตลักษณ์และความรู้สึกเหนือระดับ วันนี้แชร์เคสสะสมของ LVMH...
+                        </p>
+                        <div class="flex items-center space-x-4 text-[10px] text-gold pt-2">
+                            <span><i class="fa-regular fa-heart"></i> 41 ถูกใจ</span>
+                            <span><i class="fa-regular fa-comment"></i> 12 ความเห็น</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SCREEN 8: THE VAULT (User Profile & Treasury) ==================== -->
+        <section id="screen-vault" class="screen-transition screen-hidden flex-1 p-6 space-y-6">
+            <div class="text-center">
+                <h1 class="font-serif text-xl text-gold">The Vault</h1>
+                <p class="text-[10px] text-gray-400 uppercase tracking-widest">Treasury & Credentials</p>
+            </div>
+
+            <!-- Profile Info Card -->
+            <div class="bg-gradient-to-br from-charcoal to-midnight p-5 rounded-2xl border border-gold border-opacity-20 text-center space-y-4">
+                <div class="relative w-20 h-20 mx-auto">
+                    <div class="w-full h-full rounded-full border-2 border-gold flex items-center justify-center bg-charcoal">
+                        <i class="fa-solid fa-user-graduate text-gold text-3xl"></i>
+                    </div>
+                    <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-gold rounded-full flex items-center justify-center text-midnight text-[10px]">
+                        <i class="fa-solid fa-crown"></i>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-serif text-lg text-ivory">Exclusive Member</h3>
+                    <p class="text-[11px] text-gray-400">ID: UXB-2026-9981</p>
+                </div>
+                <!-- Status Row -->
+                <div class="grid grid-cols-2 gap-3 border-t border-gold border-opacity-10 pt-4 text-center">
+                    <div>
+                        <p class="text-[9px] text-gray-400 uppercase">Pre-test Badge</p>
+                        <p id="vault-rank-badge" class="text-xs font-semibold text-gold">Rising Star</p>
+                    </div>
+                    <div>
+                        <p class="text-[9px] text-gray-400 uppercase">หลักสูตรที่เสร็จสิ้น</p>
+                        <p id="vault-courses-count" class="text-xs font-semibold text-gold">0 / 2 วิชา</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Credentials & Certificates -->
+            <div class="space-y-3">
+                <h3 class="font-serif text-xs text-gold uppercase tracking-widest"><i class="fa-solid fa-certificate"></i> Certificates Earned</h3>
+                <div id="certificates-container" class="space-y-3">
+                    <!-- Initial empty state or dynamic certificates -->
+                    <div class="bg-charcoal bg-opacity-30 p-5 rounded-xl border border-dashed border-gold border-opacity-20 text-center">
+                        <i class="fa-solid fa-ribbon text-gold text-opacity-30 text-2xl mb-2"></i>
+                        <p class="text-xs text-gray-400 font-light leading-relaxed">
+                            เรียนรู้และตอบแบบทดสอบให้สมบูรณ์เพื่อปลดล็อกใบประกาศนียบัตรทองคำจาก LuxeBiz Academy
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Account Settings & Privacy Area -->
+            <div class="space-y-3">
+                <h3 class="font-serif text-xs text-gold uppercase tracking-widest">The Security Lock</h3>
+                <div class="bg-charcoal bg-opacity-40 rounded-xl border border-gold border-opacity-10 divide-y divide-gold divide-opacity-10 text-xs">
+                    <div class="p-4 flex items-center justify-between">
+                        <span class="text-gray-300">ความปลอดภัยรหัสผ่านระดับสากล</span>
+                        <span class="text-[11px] text-gold font-semibold">เปิดใช้งานแล้ว</span>
+                    </div>
+                    <div class="p-4 flex items-center justify-between">
+                        <span class="text-gray-300">อีเมลการรับรอง</span>
+                        <span class="text-[11px] text-gray-400">user@luxebiz.com</span>
+                    </div>
+                    <div class="p-4 flex items-center justify-between" onclick="showSecurityNotice()">
+                        <span class="text-gray-300 cursor-pointer hover:text-gold transition">นโยบายความเป็นส่วนตัวของ VIP</span>
+                        <i class="fa-solid fa-chevron-right text-gold text-[10px]"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PREMIUM GLASSMORPHIC BOTTOM NAVIGATION (Only displays when Phase 1 ends) -->
+        <nav id="bottom-nav" class="hidden glass-nav sticky bottom-0 left-0 right-0 z-50 flex justify-around py-3 px-2">
+            <button onclick="goToTab('dashboard')" id="nav-dashboard" class="flex flex-col items-center space-y-1 text-gold">
+                <i class="fa-solid fa-desktop text-base"></i>
+                <span class="text-[9px] tracking-wider uppercase">Suite</span>
+            </button>
+            <button onclick="goToTab('academy')" id="nav-academy" class="flex flex-col items-center space-y-1 text-gray-400">
+                <i class="fa-solid fa-graduation-cap text-base"></i>
+                <span class="text-[9px] tracking-wider uppercase">Academy</span>
+            </button>
+            <button onclick="goToTab('lounge')" id="nav-lounge" class="flex flex-col items-center space-y-1 text-gray-400">
+                <i class="fa-solid fa-glass-cheers text-base"></i>
+                <span class="text-[9px] tracking-wider uppercase">Lounge</span>
+            </button>
+            <button onclick="goToTab('vault')" id="nav-vault" class="flex flex-col items-center space-y-1 text-gray-400">
+                <i class="fa-solid fa-vault text-base"></i>
+                <span class="text-[9px] tracking-wider uppercase">Vault</span>
+            </button>
+        </nav>
+
+    </main>
+
+    <!-- PREMIUM INTERACTIVE CUSTOM MODAL / TOAST -->
+    <div id="premium-toast" class="fixed top-5 left-1/2 transform -translate-x-1/2 z-50 bg-charcoal border border-gold px-6 py-3 rounded-xl shadow-[0_0_20px_rgba(212,175,55,0.25)] flex items-center space-x-3 pointer-events-none opacity-0 transition-opacity duration-300">
+        <i class="fa-solid fa-bell text-gold"></i>
+        <span id="toast-message" class="text-xs text-ivory font-medium">ข้อความพรีเมียม</span>
+    </div>
+
+    <!-- SEMINAR RSVP MODAL (POPUP) -->
+    <div id="rsvp-modal" class="fixed inset-0 z-50 bg-black bg-opacity-70 flex items-center justify-center p-6 hidden">
+        <div class="bg-charcoal border border-gold p-6 rounded-2xl max-w-sm w-full space-y-4">
+            <div class="text-center">
+                <i class="fa-solid fa-gem text-gold text-3xl mb-2"></i>
+                <h3 class="font-serif text-lg text-gold">ยืนยันสิทธิ์ VIP</h3>
+                <p class="text-xs text-gray-400 mt-1">สิทธิ์เข้าร่วม Exclusive Event: Prestige Wine & Business Connect</p>
+            </div>
+            <div class="border border-gold border-opacity-10 p-3 rounded-lg text-center bg-midnight bg-opacity-50">
+                <p class="text-xs text-ivory">รหัสยืนยัน: LUX-RSVP-2026</p>
+            </div>
+            <p class="text-[10px] text-gray-400 text-center">ระบบได้บันทึกรายชื่อของคุณเข้าสู่คณะกรรมการเพื่อเตรียมการต้อนรับแล้ว</p>
+            <button onclick="closeRsvpModal()" class="w-full py-3 bg-gold text-midnight text-xs font-bold rounded-lg hover:bg-goldLight transition-all">ยอมรับและปิดหน้านี้</button>
+        </div>
+    </div>
+
+    <!-- POST CREATION MODAL -->
+    <div id="post-modal" class="fixed inset-0 z-50 bg-black bg-opacity-70 flex items-center justify-center p-6 hidden">
+        <div class="bg-charcoal border border-gold p-6 rounded-2xl max-w-sm w-full space-y-4">
+            <div class="flex justify-between items-center">
+                <h3 class="font-serif text-sm text-gold uppercase tracking-widest"><i class="fa-solid fa-pen-fancy"></i> ตั้งกระทู้พรีเมียม</h3>
+                <button onclick="closePostModal()" class="text-gold hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="space-y-3">
+                <div>
+                    <label class="text-[10px] text-gray-400 uppercase block mb-1">หัวข้อบทสนทนา</label>
+                    <input type="text" id="post-title" class="w-full bg-midnight border border-gold border-opacity-30 rounded-lg p-2.5 text-xs text-ivory focus:outline-none focus:border-gold" placeholder="ระบุประเด็นที่คุณประสงค์แบ่งปัน...">
+                </div>
+                <div>
+                    <label class="text-[10px] text-gray-400 uppercase block mb-1">เนื้อหาบทวิเคราะห์</label>
+                    <textarea id="post-body" class="w-full bg-midnight border border-gold border-opacity-30 rounded-lg p-2.5 text-xs text-ivory focus:outline-none focus:border-gold h-24" placeholder="แบ่งปันแนวคิดหรือคำถามเชิงกลยุทธ์ของคุณที่นี่..."></textarea>
+                </div>
+            </div>
+            <button onclick="submitPost()" class="w-full py-3 bg-gold text-midnight text-xs font-bold rounded-lg hover:bg-goldLight transition-all">แบ่งปันข้อมูลสู่คลับ</button>
+        </div>
+    </div>
+
+    <!-- PLAY PREMIUM LESSON MODAL -->
+    <div id="lesson-modal" class="fixed inset-0 z-50 bg-black bg-opacity-80 flex items-center justify-center p-6 hidden">
+        <div class="bg-charcoal border border-gold p-6 rounded-2xl max-w-sm w-full space-y-4 relative">
+            <button onclick="closeLessonModal()" class="absolute top-4 right-4 text-gold hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+            <div class="text-center pt-2">
+                <span class="text-[9px] border border-gold border-opacity-35 text-gold px-2.5 py-0.5 rounded-full uppercase tracking-wider">The Academy Wing</span>
+                <h3 id="lesson-title" class="font-serif text-lg text-ivory mt-3 mb-2">บทเรียนระดับพรีเมียม</h3>
+                <p id="lesson-desc" class="text-xs text-gray-400 leading-relaxed font-light mb-4">ยินดีต้อนรับผู้บริหารเข้าสู่สถาบันการวิเคราะห์ชั้นสูง</p>
+            </div>
+            <div class="border border-gold border-opacity-20 bg-midnight rounded-xl p-4 flex flex-col items-center justify-center space-y-3 shadow-inner">
+                <i class="fa-solid fa-volume-high text-gold text-3xl animate-bounce"></i>
+                <p class="text-[10px] text-gold tracking-widest uppercase font-semibold">Audio Experience</p>
+                <p class="text-xs text-center text-gray-300">กำลังสตรีมการวิเคราะห์กลยุทธ์พิเศษแบบเสียง</p>
+                <div class="w-full bg-charcoal h-1 rounded-full overflow-hidden">
+                    <div class="bg-gold h-full animate-[shimmer_2s_infinite]" style="width: 45%;"></div>
+                </div>
+            </div>
+            <button onclick="completeLesson()" class="w-full py-3 bg-gold text-midnight text-xs font-bold rounded-lg hover:bg-goldLight transition-all">สำเร็จบทเรียนและปลดล็อกประกาศนียบัตร</button>
+        </div>
+    </div>
+
+
+    <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+    <script>
+        // --- 1. Sound & Premium Haptic Simulator (Web Audio API) ---
+        let audioCtx = null;
+        function playPremiumClick(type = 'click') {
+            try {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                if (type === 'click') {
+                    // Soft high-end gold-shimmer click
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(1000, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.08);
+                    
+                    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+                    
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.08);
+                } else if (type === 'success') {
+                    // Golden high-end success chime
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
+                    osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1); // A5
+                    
+                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                    
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.4);
+                } else if (type === 'congrats') {
+                    // Royal fanfare sound effect
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+                    osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); // E5
+                    osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2); // G5
+                    osc.frequency.setValueAtTime(1046.50, audioCtx.currentTime + 0.3); // C6
+                    
+                    gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.6);
+                    
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.6);
+                }
+            } catch (err) {
+                console.warn('Web Audio Context not allowed/supported yet');
+            }
+        }
+
+        // --- 2. Interactive Canvas Particles ---
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class GoldParticle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = Math.random() * 0.15 - 0.075;
+                this.speedY = Math.random() * 0.15 - 0.075;
+                this.alpha = Math.random() * 0.5 + 0.2;
+                this.pulseSpeed = Math.random() * 0.01 + 0.005;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.alpha += this.pulseSpeed;
+
+                if (this.alpha > 0.85 || this.alpha < 0.1) {
+                    this.pulseSpeed = -this.pulseSpeed;
+                }
+
+                if (this.x < 0 || this.x > canvas.width) this.speedX = -this.speedX;
+                if (this.y < 0 || this.y > canvas.height) this.speedY = -this.speedY;
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = '#D4AF37';
+                ctx.fillStyle = '#D4AF37';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const count = Math.min(60, Math.floor((canvas.width * canvas.height) / 10000));
+            for (let i = 0; i < count; i++) {
+                particles.push(new GoldParticle());
+            }
+        }
+        initParticles();
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // --- 3. Dynamic Application State ---
+        const AppState = {
+            currentScreen: 'welcome',
+            history: [],
+            selectedSubject: null,
+            quizProgress: 0,
+            quizAnswers: Array(10).fill(null),
+            score: 0,
+            userRank: 'Apprentice',
+            unlockedCertificates: [],
+            completedCourses: {
+                business: false,
+                finance: false
+            }
+        };
+
+        // --- 4. Premium Typewriter Effect on Welcome ---
+        const welcomeMessage = "ยินดีต้อนรับเข้าสู่แอปสำหรับการเรียนรู้ การเงินและการทำธุรกิจ เพื่อความสำเร็จสูงสุดนะครับ";
+        let index = 0;
+        function runWelcomeTypewriter() {
+            const welcomeTextEl = document.getElementById('welcome-text');
+            if (index < welcomeMessage.length) {
+                welcomeTextEl.innerHTML = welcomeMessage.substring(0, index + 1) + "<span class='typewriter-cursor'></span>";
+                index++;
+                setTimeout(runWelcomeTypewriter, 45);
+            } else {
+                welcomeTextEl.innerHTML = welcomeMessage;
+            }
+        }
+        window.onload = function() {
+            runWelcomeTypewriter();
+        };
+
+        // Show a premium system notification
+        function showPremiumToast(text) {
+            const toast = document.getElementById('premium-toast');
+            const message = document.getElementById('toast-message');
+            message.innerText = text;
+            toast.style.opacity = '1';
+            setTimeout(() => {
+                toast.style.opacity = '0';
+            }, 3000);
+        }
+
+        // --- Navigation Controller ---
+        function changeScreen(screenId, animateDir = 'forward') {
+            playPremiumClick('click');
+            
+            const currentEl = document.getElementById(`screen-${AppState.currentScreen}`);
+            const targetEl = document.getElementById(`screen-${screenId}`);
+
+            if (currentEl) {
+                currentEl.classList.remove('screen-active');
+                currentEl.classList.add('screen-hidden');
+            }
+
+            if (targetEl) {
+                targetEl.classList.remove('screen-hidden');
+                targetEl.classList.add('screen-active');
+            }
+
+            // Save history
+            if (animateDir === 'forward') {
+                AppState.history.push(AppState.currentScreen);
+            }
+            
+            AppState.currentScreen = screenId;
+
+            // Handle UI changes dynamic base on Screen
+            handleScreenSpecificUIAustere(screenId);
+        }
+
+        function navigateBack() {
+            if (AppState.history.length > 0) {
+                const prev = AppState.history.pop();
+                changeScreen(prev, 'backward');
+            }
+        }
+
+        function handleScreenSpecificUIAustere(screenId) {
+            const header = document.getElementById('app-header');
+            const bottomNav = document.getElementById('bottom-nav');
+            const backBtnContainer = document.getElementById('back-btn-container');
+
+            // Header state
+            if (screenId === 'welcome' || screenId === 'result') {
+                header.classList.add('hidden');
+                backBtnContainer.classList.add('hidden');
+            } else {
+                header.classList.remove('hidden');
+            }
+
+            // Bottom Nav state (Only visible in Phase 2 core dashboards)
+            const phase2Screens = ['dashboard', 'academy', 'lounge', 'vault'];
+            if (phase2Screens.includes(screenId)) {
+                bottomNav.classList.remove('hidden');
+                backBtnContainer.classList.add('hidden'); // No back button on core hubs
+                // Update active tab styling
+                document.querySelectorAll('#bottom-nav button').forEach(btn => {
+                    btn.classList.remove('text-gold');
+                    btn.classList.add('text-gray-400');
+                });
+                const activeNavBtn = document.getElementById(`nav-${screenId}`);
+                if (activeNavBtn) {
+                    activeNavBtn.classList.add('text-gold');
+                    activeNavBtn.classList.remove('text-gray-400');
+                }
+            } else {
+                bottomNav.classList.add('hidden');
+            }
+
+            // Back button control for sub-screens in induction
+            if (['subject', 'pretest'].includes(screenId)) {
+                backBtnContainer.classList.remove('hidden');
+            } else if (phase2Screens.includes(screenId)) {
+                backBtnContainer.classList.add('hidden');
+            }
+        }
+
+        // --- Phase 1: Interactive flow actions ---
+
+        function startJourney() {
+            changeScreen('subject');
+        }
+
+        function selectSubject(subject) {
+            playPremiumClick('click');
+            AppState.selectedSubject = subject;
+            
+            // Toggle visual selection state
+            const cardBusiness = document.getElementById('card-business');
+            const cardFinance = document.getElementById('card-finance');
+            const enterBtn = document.getElementById('btn-enter-classroom');
+
+            if (subject === 'business') {
+                cardBusiness.classList.add('border-gold', 'bg-opacity-80');
+                cardBusiness.querySelector('.dot').classList.remove('scale-0');
+                cardFinance.classList.remove('border-gold', 'bg-opacity-80');
+                cardFinance.querySelector('.dot').classList.add('scale-0');
+            } else {
+                cardFinance.classList.add('border-gold', 'bg-opacity-80');
+                cardFinance.querySelector('.dot').classList.remove('scale-0');
+                cardBusiness.classList.remove('border-gold', 'bg-opacity-80');
+                cardBusiness.querySelector('.dot').classList.add('scale-0');
+            }
+
+            // Enable Enter classroom Button
+            enterBtn.disabled = false;
+            enterBtn.innerText = "เข้าสู่บทเรียน (Enter Classroom)";
+            enterBtn.className = "w-full py-4 rounded-full bg-gold text-midnight font-bold text-sm tracking-widest hover:bg-goldLight hover:shadow-[0_0_20px_rgba(212,175,55,0.3)] transition-all duration-300 cursor-pointer";
+        }
+
+        function enterClassroom() {
+            // Load and start Pre-test Quiz
+            AppState.quizProgress = 0;
+            AppState.quizAnswers = Array(10).fill(null);
+            setupQuizQuestion();
+            changeScreen('pretest');
+        }
+
+        // --- Pre-test Assessment Question Data ---
+        const businessQuestions = [
+            {
+                q: "Value Proposition คืออะไร?",
+                badge: "Business Strategy",
+                opts: [
+                    "คุณค่าการบริการหรือผลิตภัณฑ์ที่ส่งมอบให้ผู้บริโภค",
+                    "การกำหนดราคาสินค้าให้แพงกว่าคู่แข่งในตลาด",
+                    "ใบเสนอราคาที่ส่งให้กับฝ่ายจัดซื้อของคู่ค้า",
+                    "การวิเคราะห์ข้อมูลผู้ถือหุ้น"
+                ],
+                correct: 0
+            },
+            {
+                q: "SWOT Analysis ตัว T หมายถึงอะไร?",
+                badge: "Business Analysis",
+                opts: [
+                    "Target - กลุ่มเป้าหมายเป้าหมาย",
+                    "Threats - อุปสรรคและภัยคุกคามภายนอก",
+                    "Technology - เทคโนโลยีในการพัฒนาธุรกิจ",
+                    "Timing - จังหวะเวลาที่เหมาเจาะในการลงทุน"
+                ],
+                correct: 1
+            },
+            {
+                q: "การทำ Branding สำคัญอย่างไรในยุคปัจจุบัน?",
+                badge: "Marketing & Image",
+                opts: [
+                    "ช่วยลดต้นทุนภาษีที่บริษัทต้องจ่ายรายปี",
+                    "เพิ่มโอกาสในการจดลิขสิทธิ์ของสิ่งประดิษฐ์",
+                    "สร้างการจดจำ อัตลักษณ์พรีเมียม และสร้างมูลค่าเพิ่มสินค้า",
+                    "ทำให้ผลิตภัณฑ์ถูกลงจนทุกคนเข้าถึงง่าย"
+                ],
+                correct: 2
+            },
+            {
+                q: "Target Audience หมายถึงกลุ่มใด?",
+                badge: "Marketing & Brand",
+                opts: [
+                    "กลุ่มลูกจ้างและทรัพยากรบุคคลของบริษัท",
+                    "กลุ่มเป้าหมายหรือลูกค้าหลักที่คาดว่าจะซื้อผลิตภัณฑ์",
+                    "กลุ่มคู่แข่งรายสำคัญในระดับสากล",
+                    "กลุ่มคณะกรรมการบริหารบริษัท"
+                ],
+                correct: 1
+            },
+            {
+                q: "B2B และ B2C ต่างกันอย่างไร?",
+                badge: "Business Foundation",
+                opts: [
+                    "B2B เน้นส่งมอบตลาดแฮนด์เมด B2C เน้นเครื่องจักร",
+                    "B2B คือการค้าขายส่งข้ามชายแดน B2C คือการขายในร้าน",
+                    "B2B คือธุรกิจสู่ธุรกิจ ส่วน B2C คือธุรกิจสู่ผู้บริโภคทั่วไป",
+                    "ทั้งสองคำมีความหมายเหมือนกันทุกประการ"
+                ],
+                correct: 2
+            },
+            {
+                q: "ข้อใดคือความสำคัญของ Business Model Canvas?",
+                badge: "Strategic Canvas",
+                opts: [
+                    "แผนผังการควบคุมและจัดการโครงสร้างพนักงานแบบละเอียด",
+                    "แบบจำลองโครงสร้างงบประมาณประจำไตรมาส",
+                    "เครื่องมือสรุปภาพรวมแผนธุรกิจ 9 มิติให้อยู่ในหน้าเดียว",
+                    "เอกสารสัญญาทางกฎหมายระหว่างผู้ถือหุ้น"
+                ],
+                correct: 2
+            },
+            {
+                q: "การจัดการห่วงโซ่อุปทาน (Supply Chain) คืออะไร?",
+                badge: "Operation Mastery",
+                opts: [
+                    "การจัดหาสายโซ่ที่ใช้ยึดเครื่องจักรในอุตสาหกรรม",
+                    "การจัดอันดับซัพพลายเออร์ที่ให้ผลตอบแทนสูงสุด",
+                    "การจัดการการไหลของวัตถุดิบและข้อมูลตั้งแต่ต้นน้ำสู่ลูกค้า",
+                    "การควบคุมเครือข่ายธนาคารผู้สนับสนุนเงินทุน"
+                ],
+                correct: 2
+            },
+            {
+                q: "MVP ในเชิงธุรกิจย่อมาจากอะไร?",
+                badge: "Innovation & Startup",
+                opts: [
+                    "Minimum Viable Product - ผลิตภัณฑ์ขั้นต่ำที่พอใช้งานได้",
+                    "Most Valuable Person - บุคลากรผู้ทรงเกียรติสูงสุด",
+                    "Maximum Value Profit - อัตราส่วนผลกำไรสูงสุด",
+                    "Modern Venture Partnership - พันธมิตรร่วมทุนร่วมสมัย"
+                ],
+                correct: 0
+            },
+            {
+                q: "Leadership ต่างจาก Management อย่างไร?",
+                badge: "Organization & Team",
+                opts: [
+                    "Management เน้นการควบคุมกระบวนการ Leadership เน้นสร้างวิสัยทัศน์และแรงบันดาลใจ",
+                    "Leadership เป็นชื่อตำแหน่งพนักงานทั่วไป Management เป็นชื่อตำแหน่งบอร์ดผู้บริหาร",
+                    "ไม่มีความแตกต่างกันอย่างมีนัยสำคัญ",
+                    "Management ต้องใช้ทักษะคณิตศาสตร์มากกว่า Leadership"
+                ],
+                correct: 0
+            },
+            {
+                q: "การวัดผลแบบ OKRs คืออะไร?",
+                badge: "Executive Control",
+                opts: [
+                    "ระบบบันทึกความล้มเหลวในการจัดจำหน่ายสินค้า",
+                    "ระบบการประเมินเงินได้ประจำปีของเจ้าหน้าที่บริหาร",
+                    "การประเมินจากความเร็วของกระบวนการส่งออกสินค้า",
+                    "ระบบกำหนดเป้าหมายและผลลัพธ์หลักที่มุ่งเน้นและวัดผลได้"
+                ],
+                correct: 3
+            }
+        ];
+
+        const financeQuestions = [
+            {
+                q: "Assets = Liabilities + Equity คือสมการอะไร?",
+                badge: "Accounting Standard",
+                opts: [
+                    "สมการสิทธิส่วนบุคคล",
+                    "สมการบัญชี (Accounting Equation)",
+                    "สมการอัตราเงินเฟ้อส่วนรวม",
+                    "สมการกระแสเงินหมุนเวียนในตลาดตราสารหนี้"
+                ],
+                correct: 1
+            },
+            {
+                q: "Cash Flow Statement บอกอะไรแก่เจ้าของธุรกิจ?",
+                badge: "Financial Analysis",
+                opts: [
+                    "ภาพรวมกำไรขาดทุนของบริษัทในช่วง 5 ปีถัดไป",
+                    "ข้อมูลการหมุนเวียนของเงินสดเข้าและออกในสามกิจกรรมหลัก",
+                    "อัตราหนี้สินต่อทุนทั้งหมดของอุตสาหกรรม",
+                    "จำนวนทรัพย์สินที่จับต้องไม่ได้ทั้งหมดของแบรนด์"
+                ],
+                correct: 1
+            },
+            {
+                q: "ROI (Return on Investment) คำนวณอย่างไร?",
+                badge: "Wealth Formula",
+                opts: [
+                    "(รายได้ทั้งหมด x ต้นทุนสินค้า) / กำไรสุทธิ",
+                    "(ผลตอบแทนสุทธิจากการลงทุน / ต้นทุนการลงทุน) x 100",
+                    "กำไรสะสมหารด้วยจำนวนหุ้นทั้งหมดที่มีการจดทะเบียน",
+                    "มูลค่าแบรนด์ภาพรวมหักลบหนี้สินค้างชำระ"
+                ],
+                correct: 1
+            },
+            {
+                q: "Compound Interest (ดอกเบี้ยทบต้น) ทำงานอย่างไร?",
+                badge: "Capital Growth",
+                opts: [
+                    "การจ่ายดอกเบี้ยในปริมาณที่ลดลงเรื่อยๆ ตราบใดที่มีหนี้",
+                    "การจ่ายดอกเบี้ยคำนวณจากทั้งเงินต้นเดิมและดอกเบี้ยที่สะสมมา",
+                    "การหักสิทธิ์กองทุนสำรองเลี้ยงชีพเมื่อพ้นระยะประกัน",
+                    "อัตราการเติบโตแบบก้าวกระโดดของค่าธรรมเนียมเงินฝาก"
+                ],
+                correct: 1
+            },
+            {
+                q: "ความแตกต่างระหว่าง Fixed Cost และ Variable Cost?",
+                badge: "Corporate Finance",
+                opts: [
+                    "Fixed Cost เปลี่ยนแปลงตามยอดการผลิต Variable Cost คงที่",
+                    "Fixed Cost คือต้นทุนคงที่ที่ไม่เปลี่ยนตามยอดขาย Variable Cost คือต้นทุนที่เปลี่ยนตามปริมาณการผลิต",
+                    "Fixed Cost เป็นหนี้ระยะยาว Variable Cost เป็นหนี้ระยะสั้น",
+                    "ทั้งสองคำมีความหมายเดียวกัน"
+                ],
+                correct: 1
+            },
+            {
+                q: "Inflation (เงินเฟ้อ) ส่งผลอย่างไรต่ออำนาจซื้อ?",
+                badge: "Macroeconomics",
+                opts: [
+                    "ทำให้สินค้าและบริการราคาถูกลง ซื้อได้ปริมาณมากขึ้น",
+                    "ทำให้ระดับราคาสินค้าเพิ่มขึ้น ส่งผลให้อำนาจซื้อลดลง",
+                    "ทำให้เงินตราต่างประเทศสูญเสียสภาพคล่องไปทันที",
+                    "ทำให้ผู้ประกอบการสามารถลดขั้นตอนการเสียภาษีได้"
+                ],
+                correct: 1
+            },
+            {
+                q: "Liquidity (สภาพคล่อง) สำคัญอย่างไรต่อธุรกิจ?",
+                badge: "Risk Management",
+                opts: [
+                    "สะท้อนความสามารถในการแปลงสินทรัพย์เป็นเงินสดเพื่อชำระหนี้ระยะสั้น",
+                    "บ่งบอกความเร็วสูงสุดในการผลิตสินค้าออกจากโรงงาน",
+                    "บ่งบอกสัดส่วนการจดลิขสิทธิ์ของบริษัทในตลาดสากล",
+                    "แสดงถึงปริมาณกระแสไฟฟ้าที่ไหลผ่านสายการผลิตหลัก"
+                ],
+                correct: 0
+            },
+            {
+                q: "Diversification ในการลงทุนคืออะไร?",
+                badge: "Portfolio Management",
+                opts: [
+                    "การทุ่มเทเงินทุนทั้งหมดลงในสินทรัพย์เดียวที่เติบโตสูงสุด",
+                    "การกระจายการลงทุนในหลากหลายสินทรัพย์เพื่อลดความเสี่ยงโดยรวม",
+                    "การเปลี่ยนประเภทธุรกิจขององค์กรทุกๆ ไตรมาส",
+                    "การลงทุนเฉพาะในพันธบัตรรัฐบาลเท่านั้น"
+                ],
+                correct: 1
+            },
+            {
+                q: "P/E Ratio ใช้ประเมินอะไรในหุ้น?",
+                badge: "Valuation Skill",
+                opts: [
+                    "ความสามารถในการทำกำไรสุทธิเทียบกับจำนวนพนักงานทั้งหมด",
+                    "อัตราการกู้ยืมเงินของบริษัทเมื่อเทียบกับผู้ถือหุ้นหลัก",
+                    "ความถูกแพงของราคาหุ้นเปรียบเทียบกับกำไรสุทธิต่อหุ้น",
+                    "ประเมินประสิทธิภาพการโฆษณาในช่องทางดิจิทัล"
+                ],
+                correct: 2
+            },
+            {
+                q: "Break-even Point (จุดคุ้มทุน) คือจุดที่อะไรเท่ากับอะไร?",
+                badge: "Profitability Check",
+                opts: [
+                    "มูลค่าสินค้าในคลัง เท่ากับ จำนวนลูกค้าหลัก",
+                    "ยอดขายรวม เท่ากับ กำไรสะสมสุทธิหลังหักภาษี",
+                    "รายได้รวม เท่ากับ ต้นทุนรวมทั้งหมดในการดำเนินงาน",
+                    "มูลค่าหุ้นเดิม เท่ากับ เงินปันผลที่ได้รับในรอบปี"
+                ],
+                correct: 2
+            }
+        ];
+
+        function setupQuizQuestion() {
+            const list = AppState.selectedSubject === 'business' ? businessQuestions : financeQuestions;
+            const currentQ = list[AppState.quizProgress];
+
+            // Set progress indicators
+            document.getElementById('quiz-progress-text').innerText = `${AppState.quizProgress + 1}/10`;
+            document.getElementById('quiz-progress-bar').style.width = `${(AppState.quizProgress + 1) * 10}%`;
+
+            // Setup Badge & Question text
+            document.getElementById('quiz-badge').innerText = currentQ.badge;
+            document.getElementById('quiz-question').innerText = currentQ.q;
+
+            // Fill Options List with elegant styled buttons
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+
+            currentQ.opts.forEach((optionText, idx) => {
+                const isSelected = AppState.quizAnswers[AppState.quizProgress] === idx;
+                const optionBtn = document.createElement('button');
+                optionBtn.onclick = () => selectQuizAnswer(idx);
+                optionBtn.className = `w-full text-left p-4 rounded-xl border text-xs transition-all duration-300 flex items-center justify-between ${
+                    isSelected 
+                    ? 'border-gold bg-gold bg-opacity-10 text-gold font-medium' 
+                    : 'border-gold border-opacity-10 bg-midnight hover:border-gold hover:border-opacity-30 text-gray-300'
+                }`;
+                
+                const optionAlphabet = String.fromCharCode(65 + idx); // A, B, C, D
+                optionBtn.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <span class="w-6 h-6 rounded-lg ${isSelected ? 'bg-gold text-midnight font-bold' : 'bg-charcoal text-gold font-medium'} flex items-center justify-center text-[10px] border border-gold border-opacity-20">${optionAlphabet}</span>
+                        <span>${optionText}</span>
+                    </div>
+                    <div class="w-4 h-4 rounded-full border ${isSelected ? 'border-gold bg-gold' : 'border-gold border-opacity-20'} flex items-center justify-center">
+                        <i class="fa-solid fa-check text-[9px] text-midnight ${isSelected ? 'block' : 'hidden'}"></i>
+                    </div>
+                `;
+                optionsContainer.appendChild(optionBtn);
+            });
+
+            // Toggle back button disable status on first question
+            document.getElementById('quiz-prev-btn').disabled = AppState.quizProgress === 0;
+            document.getElementById('quiz-prev-btn').style.opacity = AppState.quizProgress === 0 ? '0.5' : '1';
+
+            // Next button disable control
+            updateNextBtnState();
+        }
+
+        function selectQuizAnswer(idx) {
+            playPremiumClick('click');
+            AppState.quizAnswers[AppState.quizProgress] = idx;
+            setupQuizQuestion(); // Redraw with selected indicator
+        }
+
+        function updateNextBtnState() {
+            const nextBtn = document.getElementById('quiz-next-btn');
+            const answerSelected = AppState.quizAnswers[AppState.quizProgress] !== null;
+            nextBtn.disabled = !answerSelected;
+            
+            if (AppState.quizProgress === 9) {
+                nextBtn.innerHTML = `ดูผลการประเมิน <i class="fa-solid fa-circle-check ml-2"></i>`;
+            } else {
+                nextBtn.innerHTML = `ถัดไป <i class="fa-solid fa-arrow-right ml-2"></i>`;
+            }
+        }
+
+        function nextQuizQuestion() {
+            if (AppState.quizProgress < 9) {
+                AppState.quizProgress++;
+                setupQuizQuestion();
+            } else {
+                // Calculation of final score
+                calculateQuizResult();
+            }
+        }
+
+        function prevQuizQuestion() {
+            if (AppState.quizProgress > 0) {
+                AppState.quizProgress--;
+                setupQuizQuestion();
+            }
+        }
+
+        function calculateQuizResult() {
+            const list = AppState.selectedSubject === 'business' ? businessQuestions : financeQuestions;
+            let finalScore = 0;
+            list.forEach((q, idx) => {
+                if (AppState.quizAnswers[idx] === q.correct) {
+                    finalScore++;
+                }
+            });
+
+            AppState.score = finalScore;
+
+            // Determine Rank
+            let rank = 'Apprentice';
+            let rankDesc = 'คุณพร้อมที่จะเริ่มสัมผัสกระบวนการและทฤษฎีธุรกิจชั้นนำเพื่อขัดเกลาศักยภาพและพัฒนาตนเองอย่างเป็นระดับ';
+            
+            if (finalScore >= 8) {
+                rank = 'Rising Star';
+                rankDesc = 'คุณมีความรู้พื้นฐานที่โดดเด่น ยอดเยี่ยม พร้อมสำหรับการเรียนเจาะลึกกลยุทธ์และการสร้างความมั่งคั่งขั้นสูงเพื่อก้าวสู่ระดับบริหาร';
+            } else if (finalScore >= 5) {
+                rank = 'Elite Scholar';
+                rankDesc = 'ความเข้าใจระดับปานกลาง มีรากฐานที่ดีเยี่ยมในการต่อยอดความรู้เชิงลึกของแต่ละมิติธุรกิจและการจัดพอร์ตการเงิน';
+            }
+
+            AppState.userRank = rank;
+
+            // Unlock Certificate dynamically based on Subject
+            if (AppState.selectedSubject === 'business') {
+                AppState.completedCourses.business = true;
+            } else {
+                AppState.completedCourses.finance = true;
+            }
+
+            // Sync User Rank to Header and Vault
+            document.getElementById('header-user-rank').innerText = rank;
+            document.getElementById('vault-rank-badge').innerText = rank;
+            document.getElementById('result-score').innerText = `${finalScore}/10`;
+            document.getElementById('result-rank-title').innerText = rank;
+            document.getElementById('result-rank-desc').innerText = rankDesc;
+
+            // Play nice congratulatory sound
+            playPremiumClick('success');
+            changeScreen('result');
+        }
+
+        // --- Phase 2: Core Hub Screens & Business Logic ---
+
+        function enterDashboard() {
+            // Unlocked the phase 2 tabs
+            changeScreen('dashboard');
+            playPremiumClick('congrats');
+            showPremiumToast(`เข้าสู่ห้องทำงานระดับผู้บริหารเรียบร้อยแล้ว`);
+        }
+
+        function goToTab(tabId) {
+            changeScreen(tabId);
+            if (tabId === 'academy') {
+                toggleAcademyWing('business'); // default wing
+            } else if (tabId === 'vault') {
+                renderVaultCertificates();
+            }
+        }
+
+        // --- Academy Module Customization and Interactive Elements ---
+        const academyData = {
+            business: [
+                {
+                    title: "Module 1: Strategy & Vision",
+                    desc: "วิสัยทัศน์และการวางเป้าหมายกลยุทธ์ที่สามารถพาสามสิบล้านสู่สามหมื่นล้าน",
+                    icon: "fa-compass",
+                    duration: "45 นาที"
+                },
+                {
+                    title: "Module 2: Marketing & Branding",
+                    desc: "เจาะลึกกระบวนการสร้างคุณค่าตราสินค้าให้เกิดพรีเมียมและความรักภักดีระดับพรีเมียม",
+                    icon: "fa-gem",
+                    duration: "1 ชม. 15 นาที"
+                },
+                {
+                    title: "Module 3: Operational Excellence",
+                    desc: "กระบวนการจัดสรรโครงสร้างองค์กรอย่างคล่องตัว รวดเร็ว และลดต้นทุนแอบแฝงอย่างยั่งยืน",
+                    icon: "fa-gears",
+                    duration: "50 นาที"
+                }
+            ],
+            finance: [
+                {
+                    title: "Module 1: Wealth Management",
+                    desc: "ปรัชญาการออม การกระจายความมั่งคั่งสู่สินทรัพย์ที่มีเสถียรภาพและกระแสเงินสดทบต้น",
+                    icon: "fa-coins",
+                    duration: "1 ชม."
+                },
+                {
+                    title: "Module 2: Corporate Finance",
+                    desc: "การบริหารงบดุลและโครงสร้างทางการเงินของบริษัทให้อัตราดอกเบี้ยเบาบางและมั่นคงสูง",
+                    icon: "fa-chart-pie",
+                    duration: "55 นาที"
+                },
+                {
+                    title: "Module 3: Investment Portfolios",
+                    desc: "วิเคราะห์ภาพรวมการจัดสรรโมเดลพอร์ตฟอลิโอระดับสากล และการเก็งสภาวการณ์แบบล่วงหน้า",
+                    icon: "fa-money-bill-trend-up",
+                    duration: "1 ชม. 30 นาที"
+                }
+            ]
+        };
+
+        function toggleAcademyWing(wing) {
+            playPremiumClick('click');
+            const bTab = document.getElementById('academy-tab-business');
+            const fTab = document.getElementById('academy-tab-finance');
+            const modulesContainer = document.getElementById('academy-modules-container');
+
+            if (wing === 'business') {
+                bTab.className = "flex-1 py-3 text-xs font-semibold tracking-wider border-b-2 border-gold text-gold transition-all";
+                fTab.className = "flex-1 py-3 text-xs font-semibold tracking-wider border-b-2 border-transparent text-gray-400 hover:text-gold transition-all";
+                renderAcademyModules(academyData.business, 'business');
+            } else {
+                fTab.className = "flex-1 py-3 text-xs font-semibold tracking-wider border-b-2 border-gold text-gold transition-all";
+                bTab.className = "flex-1 py-3 text-xs font-semibold tracking-wider border-b-2 border-transparent text-gray-400 hover:text-gold transition-all";
+                renderAcademyModules(academyData.finance, 'finance');
+            }
+        }
+
+        function renderAcademyModules(modules, wingKey) {
+            const container = document.getElementById('academy-modules-container');
+            container.innerHTML = '';
+
+            modules.forEach((mod, idx) => {
+                const modCard = document.createElement('div');
+                modCard.onclick = () => openLesson(mod.title, mod.desc);
+                modCard.className = "gold-glow bg-charcoal bg-opacity-50 p-5 rounded-xl border border-gold border-opacity-10 cursor-pointer flex items-start justify-between group";
+                modCard.innerHTML = `
+                    <div class="flex items-start space-x-3.5">
+                        <div class="w-10 h-10 rounded-lg bg-gold bg-opacity-10 flex items-center justify-center border border-gold border-opacity-20 text-gold mt-1">
+                            <i class="fa-solid ${mod.icon} text-base"></i>
+                        </div>
+                        <div class="space-y-1">
+                            <h3 class="text-xs font-semibold text-ivory group-hover:text-gold transition-colors">${mod.title}</h3>
+                            <p class="text-[11px] text-gray-400 font-light leading-relaxed">${mod.desc}</p>
+                            <span class="inline-block text-[9px] text-gold text-opacity-80"><i class="fa-regular fa-clock"></i> ${mod.duration}</span>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-angle-right text-gold text-opacity-50 group-hover:text-opacity-100 transition mt-2"></i>
+                `;
+                container.appendChild(modCard);
+            });
+        }
+
+        let activeLessonTitle = "";
+        function openLesson(title, desc) {
+            playPremiumClick('click');
+            activeLessonTitle = title;
+            document.getElementById('lesson-title').innerText = title;
+            document.getElementById('lesson-desc').innerText = desc;
+            document.getElementById('lesson-modal').classList.remove('hidden');
+        }
+
+        function closeLessonModal() {
+            document.getElementById('lesson-modal').classList.add('hidden');
+        }
+
+        function completeLesson() {
+            closeLessonModal();
+            playPremiumClick('success');
+            showPremiumToast(`สำเร็จการเรียนรู้: ${activeLessonTitle}`);
+            
+            // Add certificate to list if not already there
+            const certName = `${activeLessonTitle.replace("Module", "Executive Cert:")}`;
+            if (!AppState.unlockedCertificates.includes(certName)) {
+                AppState.unlockedCertificates.push(certName);
+            }
+
+            // Redraw Vault stats and circular progress bar if applicable
+            updateVaultStats();
+        }
+
+        function updateVaultStats() {
+            // Dynamic count of completed courses based on completed certificates
+            const completedCount = AppState.unlockedCertificates.length;
+            const percentage = Math.min(100, Math.round((completedCount / 6) * 100));
+            
+            // Update Dashboard Circular progress
+            const circle = document.getElementById('dash-circular-progress');
+            // Max offset is 175 (0%), 0 offset is (100%)
+            const offset = 175 - (percentage / 100) * 175;
+            circle.setAttribute('stroke-dashoffset', offset);
+            
+            const ptext = document.querySelector('#screen-dashboard svg + span');
+            if (ptext) ptext.innerText = `${percentage}%`;
+
+            const detailText = document.getElementById('dashboard-progress-detail');
+            if (detailText) {
+                detailText.innerText = `บทเรียนสำเร็จแล้ว ${completedCount}/6 บทวิง`;
+            }
+
+            document.getElementById('vault-courses-count').innerText = `${completedCount === 6 ? 'ครบสมบูรณ์ (2 / 2)' : completedCount + ' โมดูลสำเร็จ'}`;
+        }
+
+        function renderVaultCertificates() {
+            const container = document.getElementById('certificates-container');
+            if (AppState.unlockedCertificates.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-charcoal bg-opacity-30 p-5 rounded-xl border border-dashed border-gold border-opacity-20 text-center">
+                        <i class="fa-solid fa-ribbon text-gold text-opacity-30 text-2xl mb-2"></i>
+                        <p class="text-xs text-gray-400 font-light leading-relaxed">
+                            เรียนรู้และตอบแบบทดสอบให้สมบูรณ์เพื่อปลดล็อกใบประกาศนียบัตรทองคำจาก LuxeBiz Academy
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = '';
+            AppState.unlockedCertificates.forEach(cert => {
+                const certEl = document.createElement('div');
+                certEl.className = "bg-gradient-to-r from-charcoal to-midnight p-4 rounded-xl border border-gold border-opacity-30 flex items-center justify-between shadow-[0_4px_10px_rgba(212,175,55,0.05)]";
+                certEl.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-gold bg-opacity-10 border border-gold border-opacity-30 flex items-center justify-center text-gold">
+                            <i class="fa-solid fa-ribbon"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-semibold text-gold tracking-wide">${cert}</h4>
+                            <p class="text-[9px] text-gray-400">LUXEBIZ CERTIFIED CREDENTIAL</p>
+                        </div>
+                    </div>
+                    <button onclick="shareCertificate('${cert}')" class="text-[10px] text-gold hover:underline"><i class="fa-solid fa-share-nodes"></i> แชร์ความสำเร็จ</button>
+                `;
+                container.appendChild(certEl);
+            });
+        }
+
+        function shareCertificate(cert) {
+            playPremiumClick('click');
+            showPremiumToast(`กำลังส่งออกและแชร์เกียรติบัตร: ${cert}`);
+        }
+
+        // --- Executive Lounge & Forums Actions ---
+        function rsvpEvent() {
+            playPremiumClick('click');
+            document.getElementById('rsvp-modal').classList.remove('hidden');
+        }
+
+        function closeRsvpModal() {
+            document.getElementById('rsvp-modal').classList.add('hidden');
+            showPremiumToast(`สำรองที่นั่ง VIP สำเร็จแล้ว เจอกันในงานอีเวนต์`);
+        }
+
+        function showCreatePostModal() {
+            playPremiumClick('click');
+            document.getElementById('post-modal').classList.remove('hidden');
+        }
+
+        function closePostModal() {
+            document.getElementById('post-modal').classList.add('hidden');
+        }
+
+        function submitPost() {
+            const title = document.getElementById('post-title').value.trim();
+            const body = document.getElementById('post-body').value.trim();
+
+            if (!title || !body) {
+                showPremiumToast('กรุณาระบุหัวข้อและเนื้อหาสำหรับโพสต์ VIP');
+                return;
+            }
+
+            // Insert post dynamically
+            const container = document.getElementById('forum-posts-container');
+            const postEl = document.createElement('div');
+            postEl.className = "bg-charcoal bg-opacity-40 p-4 rounded-xl border border-gold border-opacity-20 space-y-2 animate-[shimmer_5s_infinite]";
+            postEl.innerHTML = `
+                <div class="flex items-center justify-between">
+                    <span class="text-[11px] text-gold font-semibold"><i class="fa-solid fa-crown mr-1"></i> คุณผู้บริหาร (ท่านสมาชิก)</span>
+                    <span class="text-[9px] text-gray-400">เมื่อครู่นี้</span>
+                </div>
+                <h4 class="text-xs font-semibold text-ivory">${title}</h4>
+                <p class="text-[11px] text-gray-400 font-light leading-relaxed">${body}</p>
+                <div class="flex items-center space-x-4 text-[10px] text-gold pt-2">
+                    <span><i class="fa-regular fa-heart"></i> 1 ถูกใจ</span>
+                    <span><i class="fa-regular fa-comment"></i> 0 ความเห็น</span>
+                </div>
+            `;
+
+            container.insertBefore(postEl, container.firstChild);
+            closePostModal();
+            playPremiumClick('success');
+            showPremiumToast('กระจายข้อมูลในฟอรัมความสำเร็จแล้ว');
+            
+            // reset form
+            document.getElementById('post-title').value = '';
+            document.getElementById('post-body').value = '';
+        }
+
+        function showSecurityNotice() {
+            playPremiumClick('click');
+            showPremiumToast('ระบบรักษาความลับข้อมูลผู้บริหารระดับทหาร (Military Grade) เปิดใช้งานอยู่');
+        }
+    </script>
+</body>
+</html>
